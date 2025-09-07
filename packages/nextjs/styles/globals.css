@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s;
+}
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -76,6 +92,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -120,4 +137,38 @@
 
 .link:hover {
   opacity: 80%;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+.hero-pattern {
+  background-color: #4f46e5;
+  background-image: radial-gradient(at 47% 33%, hsl(244.82, 100%, 70%) 0, transparent 59%),
+    radial-gradient(at 82% 65%, hsl(244.76, 79%, 60%) 0, transparent 55%);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.nft-card {
+  transition: all 0.3s ease;
+}
+
+.nft-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
