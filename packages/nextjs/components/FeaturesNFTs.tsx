@@ -76,8 +76,8 @@ export default function FeaturedNFTs() {
                                 key={filter.id}
                                 onClick={() => setActiveFilter(filter.id)}
                                 className={`px-6 py-2 rounded-full transition-all duration-300 ${activeFilter === filter.id
-                                        ? 'bg-purple-600 text-white'
-                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                                     }`}
                             >
                                 {filter.label}
