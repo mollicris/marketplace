@@ -1,9 +1,12 @@
 import React from 'react'
 import Dashboard from '../admin/Dashboard'
+import { AdminRoute } from '~~/components/AdminRoute'
 
 const page = () => {
     return (
-        <Dashboard />
+        <AdminRoute>
+            <Dashboard />
+        </AdminRoute>
     )
 }
 
