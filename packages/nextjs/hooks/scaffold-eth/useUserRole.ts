@@ -24,5 +24,5 @@ export const useUserRole = () => {
         return { role: 'moderator', isAdmin: false, isModerator: true };
     }
 
-    return { role: 'admin', isAdmin: true, isModerator: true };
+    return { role: 'user', isAdmin: false, isModerator: false };
 };
