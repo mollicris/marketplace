@@ -31,7 +31,7 @@ export const menuLinks: HeaderMenuLink[] = [
   },
   {
     label: "Mis NFTs",
-    href: "/my-nfts",
+    href: "/marketplace/my-nfts",
     roles: ['user', 'moderator'] // Solo usuarios conectados
   },
   {
