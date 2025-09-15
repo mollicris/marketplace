@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Stat } from '../app/types';
+import Link from 'next/link';
 
 export default function Hero() {
     const [stats, setStats] = useState<Stat[]>([
@@ -80,12 +81,16 @@ export default function Hero() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                            <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
-                                Explorar Colecciones
-                            </button>
-                            <button className="px-8 py-4 border-2 border-purple-500 text-purple-300 rounded-lg font-semibold text-lg hover:bg-purple-900/30 transition-all duration-300">
-                                Crear NFT
-                            </button>
+                            <Link href="/marketplace" passHref>
+                                <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                                    Explorar Colecciones
+                                </button>
+                            </Link>
+                            <Link href="/create-nft" passHref>
+                                <button className="px-8 py-4 border-2 border-purple-500 text-purple-300 rounded-lg font-semibold text-lg hover:bg-purple-900/30 transition-all duration-300">
+                                    Crear NFT
+                                </button>
+                            </Link>
                         </div>
 
                         {/* Estadísticas */}
