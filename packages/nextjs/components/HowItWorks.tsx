@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Step } from '../app/types';
+import Link from 'next/link';
 
 export default function HowItWorks() {
     const [isVisible, setIsVisible] = useState(false);
@@ -85,9 +86,11 @@ export default function HowItWorks() {
                 </div>
 
                 <div className="text-center mt-12">
-                    <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-semibold text-white hover:from-purple-700 hover:to-indigo-700 transition-all duration-300">
-                        Comenzar Ahora
-                    </button>
+                    <Link href="/create-nft" passHref>
+                        <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-semibold text-white hover:from-purple-700 hover:to-indigo-700 transition-all duration-300">
+                            Comenzar Ahora
+                        </button>
+                    </Link>
                 </div>
             </div>
         </section>
