@@ -51,6 +51,9 @@ export function useDeployedContractInfo<TContractName extends ContractName>(
   const publicClient = usePublicClient({ chainId: selectedNetwork.id });
 
   useEffect(() => {
+    // A slow check for a previous network must not overwrite the result for the current one.
+    let isStale = false;
+
     const checkContractDeployment = async () => {
       try {
         if (!isMounted() || !publicClient) return;
@@ -63,6 +66,7 @@ export function useDeployedContractInfo<TContractName extends ContractName>(
         const code = await publicClient.getBytecode({
           address: deployedContract.address,
         });
+        if (isStale) return;
 
         // If contract code is `0x` => no contract deployed on that address
         if (code === "0x") {
@@ -71,12 +75,16 @@ export function useDeployedContractInfo<TContractName extends ContractName>(
         }
         setStatus(ContractCodeStatus.DEPLOYED);
       } catch (e) {
+        if (isStale) return;
         console.error(e);
         setStatus(ContractCodeStatus.NOT_FOUND);
       }
     };
 
     checkContractDeployment();
+    return () => {
+      isStale = true;
+    };
   }, [isMounted, contractName, deployedContract, publicClient]);
 
   return {
