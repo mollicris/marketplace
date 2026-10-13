@@ -47,14 +47,12 @@ export const RoleManager = () => {
   const { data: grantedEvents, isLoading: loadingGranted } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "RoleGranted",
-    fromBlock: 0n,
     watch: true,
   });
 
   const { data: revokedEvents, isLoading: loadingRevoked } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "RoleRevoked",
-    fromBlock: 0n,
     watch: true,
   });
 

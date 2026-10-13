@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUserRole } from "../hooks/scaffold-eth/useUserRole";
 import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon, ChartBarIcon, ShieldCheckIcon, UserIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ChartBarIcon, ShieldCheckIcon, UserIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
@@ -19,10 +19,10 @@ type HeaderMenuLink = {
 
 export const menuLinks: HeaderMenuLink[] = [
   {
-    label: "Home",
+    label: "Principal",
     href: "/",
     icon: <UserIcon className="h-4 w-4" />,
-    roles: ["guest", "user", "admin"],
+    roles: ["guest", "user"],
   },
   {
     label: "Marketplace",
@@ -53,12 +53,6 @@ export const adminLinks: HeaderMenuLink[] = [
     href: "/admin/settings",
     icon: <ShieldCheckIcon className="h-4 w-4" />,
     roles: ["admin"], // Solo admin completo
-  },
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
-    roles: ["admin"],
   },
 ];
 

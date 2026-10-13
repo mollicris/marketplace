@@ -14,7 +14,6 @@ export default function MarketplacePage() {
   const { data: listedEvents, isLoading } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "Listed",
-    fromBlock: 0n,
     watch: true,
   });
 

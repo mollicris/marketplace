@@ -89,21 +89,18 @@ export default function Dashboard() {
   const { data: listedEvents } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "Listed",
-    fromBlock: 0n,
     watch: true,
   });
 
   const { data: soldEvents } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "Sold",
-    fromBlock: 0n,
     watch: true,
   });
 
   const { data: delistedEvents } = useScaffoldEventHistory({
     contractName: "Marketplace",
     eventName: "Delisted",
-    fromBlock: 0n,
     watch: true,
   });
 
