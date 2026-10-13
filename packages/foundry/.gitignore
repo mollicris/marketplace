@@ -2,13 +2,22 @@
 cache/
 out/
 
-# Ignores development broadcast logs
+# Broadcast logs: local chain and dry runs are disposable.
+# Live-network runs (e.g. 11155111/) MUST stay tracked: generateTsAbis.js rebuilds
+# deployedContracts.ts from them, so ignoring them would drop those addresses from the frontend.
 /broadcast/*/31337/
 /broadcast/**/dry-run/
+
+# Coverage / gas reports
+lcov.info
+coverage/
+report/
 
 # Docs
 docs/
 
-# Dotenv file
+# Dotenv file (keystores live in ~/.foundry/keystores, never in the repo)
 .env
+.env.*
+!.env.example
 localhost.json
