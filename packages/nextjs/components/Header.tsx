@@ -4,17 +4,17 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUserRole } from "../hooks/scaffold-eth/useUserRole";
 import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon, UserIcon, ShieldCheckIcon, ChartBarIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BugAntIcon, ChartBarIcon, ShieldCheckIcon, UserIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
-import { useUserRole } from "../hooks/scaffold-eth/useUserRole";
 
 type HeaderMenuLink = {
   label: string;
   href: string;
   icon?: React.ReactNode;
-  roles?: ('guest' | 'user' | 'admin' | 'moderator')[];
+  roles?: ("guest" | "user" | "admin")[];
 };
 
 export const menuLinks: HeaderMenuLink[] = [
@@ -22,22 +22,22 @@ export const menuLinks: HeaderMenuLink[] = [
     label: "Home",
     href: "/",
     icon: <UserIcon className="h-4 w-4" />,
-    roles: ['guest', 'user', 'moderator']
+    roles: ["guest", "user", "admin"],
   },
   {
     label: "Marketplace",
     href: "/marketplace",
-    roles: ['guest', 'user', 'moderator']
+    roles: ["guest", "user", "admin"],
   },
   {
     label: "Mis NFTs",
     href: "/marketplace/my-nfts",
-    roles: ['user', 'moderator'] // Solo usuarios conectados
+    roles: ["user", "admin"],
   },
   {
     label: "Crear NFT",
     href: "/create-nft",
-    roles: ['user', 'moderator']
+    roles: ["user", "admin"],
   },
 ];
 
@@ -46,29 +46,27 @@ export const adminLinks: HeaderMenuLink[] = [
     label: "Dashboard",
     href: "/admin",
     icon: <ChartBarIcon className="h-4 w-4" />,
-    roles: ['admin', 'moderator']
+    roles: ["admin"],
   },
   {
     label: "Configuración",
     href: "/admin/settings",
     icon: <ShieldCheckIcon className="h-4 w-4" />,
-    roles: ['admin'] // Solo admin completo
+    roles: ["admin"], // Solo admin completo
   },
   {
     label: "Debug Contracts",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
-    roles: ['admin']
-  }
+    roles: ["admin"],
+  },
 ];
 
 export const HeaderMenuLinks = ({ userRole }: { userRole: string }) => {
   const pathname = usePathname();
 
   const allLinks = [...menuLinks, ...adminLinks];
-  const filteredLinks = allLinks.filter(link =>
-    !link.roles || link.roles.includes(userRole as any)
-  );
+  const filteredLinks = allLinks.filter(link => !link.roles || link.roles.includes(userRole as any));
 
   return (
     <>
@@ -81,10 +79,13 @@ export const HeaderMenuLinks = ({ userRole }: { userRole: string }) => {
             key={href}
             href={href}
             passHref
-            className={`${isActive ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg" :
-              isAdminLink ? "text-orange-300 hover:bg-orange-900/30 hover:text-orange-100" :
-                "text-gray-300 hover:text-white hover:bg-gray-700/50"
-              } px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2`}
+            className={`${
+              isActive
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg"
+                : isAdminLink
+                  ? "text-orange-300 hover:bg-orange-900/30 hover:text-orange-100"
+                  : "text-gray-300 hover:text-white hover:bg-gray-700/50"
+            } px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2`}
           >
             {icon}
             <span>{label}</span>
@@ -104,7 +105,8 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const burgerMenuRef = useRef<HTMLDetailsElement>(null);
-  const { role, isAdmin, isModerator } = useUserRole();
+  const { role, isAdmin } = useUserRole();
+  const pathname = usePathname();
 
   // Efecto para detectar scroll
   React.useEffect(() => {
@@ -116,7 +118,9 @@ export const Header = () => {
   useOutsideClick(burgerMenuRef, () => setIsMenuOpen(false));
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-gray-900/95 backdrop-blur-md shadow-xl' : 'bg-gradient-to-b from-gray-900 to-transparent'}`}>
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-gray-900/95 backdrop-blur-md shadow-xl" : "bg-gradient-to-b from-gray-900 to-transparent"}`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -147,7 +151,7 @@ export const Header = () => {
             {isLocalNetwork && <FaucetButton />}
 
             {/* Indicador de rol */}
-            {role !== 'guest' && (
+            {role !== "guest" && (
               <div className="hidden md:flex items-center px-3 py-1 rounded-full bg-gray-800/50 text-xs text-gray-300">
                 <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                 {role.toUpperCase()}
@@ -155,10 +159,7 @@ export const Header = () => {
             )}
 
             {/* Botón menú móvil */}
-            <button
-              className="lg:hidden btn btn-ghost btn-circle"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
+            <button className="lg:hidden btn btn-ghost btn-circle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <Bars3Icon className="h-6 w-6" />
             </button>
           </div>
@@ -188,17 +189,18 @@ export const Header = () => {
                 {menuLinks
                   .filter(link => !link.roles || link.roles.includes(role as any))
                   .map(({ label, href, icon }) => {
-                    const isActive = usePathname() === href;
+                    const isActive = pathname === href;
                     return (
                       <li key={href}>
                         <Link
                           href={href}
                           passHref
                           onClick={() => setIsMenuOpen(false)}
-                          className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${isActive
-                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
-                            : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                            }`}
+                          className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
+                            isActive
+                              ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
+                              : "text-gray-300 hover:bg-gray-700/50 hover:text-white"
+                          }`}
                         >
                           {icon}
                           <span className="ml-3">{label}</span>
@@ -210,26 +212,27 @@ export const Header = () => {
             </div>
 
             {/* Menú administrativo (si aplica) */}
-            {(isAdmin || isModerator) && (
+            {isAdmin && (
               <div>
                 <div className="text-xs text-orange-500 uppercase font-semibold mb-2">
-                  Herramientas de {isAdmin ? 'Administración' : 'Moderación'}
+                  Herramientas de Administración
                 </div>
                 <ul className="space-y-2">
                   {adminLinks
                     .filter(link => !link.roles || link.roles.includes(role as any))
                     .map(({ label, href, icon }) => {
-                      const isActive = usePathname() === href;
+                      const isActive = pathname === href;
                       return (
                         <li key={href}>
                           <Link
                             href={href}
                             passHref
                             onClick={() => setIsMenuOpen(false)}
-                            className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${isActive
-                              ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
-                              : 'text-orange-300 hover:bg-orange-900/30 hover:text-orange-100'
-                              }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
+                              isActive
+                                ? "bg-gradient-to-r from-orange-600 to-red-600 text-white"
+                                : "text-orange-300 hover:bg-orange-900/30 hover:text-orange-100"
+                            }`}
                           >
                             {icon}
                             <span className="ml-3">{label}</span>

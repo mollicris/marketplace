@@ -1,28 +1,46 @@
-// hooks/useUserRole.js
-import { useAccount } from 'wagmi';
+import { keccak256, toBytes } from "viem";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth/useScaffoldReadContract";
 
-// Direcciones de administradores (pueden venir de un contrato o config)
-const ADMIN_ADDRESSES = [
-    '0xa0Ee7A142d267C1f36714E4a8F75612F20a79720',
-    '0xF5178baAadf7ECC3a82DFbdf95629fae6DCaa060'
-];
+export const ADMIN_ROLE = keccak256(toBytes("ADMIN_ROLE"));
+export const USER_ROLE = keccak256(toBytes("USER_ROLE"));
+export const GUEST_ROLE = keccak256(toBytes("GUEST_ROLE"));
 
-const MODERATOR_ADDRESSES = [
-    '0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2'
-];
+export type UserRole = "admin" | "user" | "guest" | "none";
 
 export const useUserRole = () => {
-    const { address } = useAccount();
+  const { address } = useAccount();
 
-    if (!address) return { role: 'guest', isAdmin: false, isModerator: false };
+  const { data: isAdmin, isLoading: loadingAdmin } = useScaffoldReadContract({
+    contractName: "Marketplace",
+    functionName: "hasRole",
+    args: [ADMIN_ROLE, address],
+  });
 
-    if (ADMIN_ADDRESSES.includes(address.toLowerCase())) {
-        return { role: 'admin', isAdmin: true, isModerator: true };
-    }
+  const { data: isUser, isLoading: loadingUser } = useScaffoldReadContract({
+    contractName: "Marketplace",
+    functionName: "hasRole",
+    args: [USER_ROLE, address],
+  });
 
-    if (MODERATOR_ADDRESSES.includes(address.toLowerCase())) {
-        return { role: 'moderator', isAdmin: false, isModerator: true };
-    }
+  const { data: isGuest, isLoading: loadingGuest } = useScaffoldReadContract({
+    contractName: "Marketplace",
+    functionName: "hasRole",
+    args: [GUEST_ROLE, address],
+  });
 
-    return { role: 'user', isAdmin: false, isModerator: false };
+  const isLoading = loadingAdmin || loadingUser || loadingGuest;
+
+  let role: UserRole = "none";
+  if (isAdmin) role = "admin";
+  else if (isUser) role = "user";
+  else if (isGuest) role = "guest";
+
+  return {
+    role,
+    isAdmin: Boolean(isAdmin),
+    isUser: Boolean(isUser),
+    isGuest: Boolean(isGuest),
+    isLoading,
+  };
 };
