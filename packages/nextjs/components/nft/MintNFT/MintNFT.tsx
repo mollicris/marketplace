@@ -215,6 +215,7 @@ export const CreateNFT = () => {
 
               {formData.imagePreview ? (
                 <div className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- local blob: preview, unsupported by next/image */}
                   <img src={formData.imagePreview} alt="Preview" className="mx-auto max-h-64 rounded-lg object-cover" />
                   <button
                     type="button"

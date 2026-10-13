@@ -136,6 +136,7 @@ export const MyNFTCard = ({ tokenId, nftAddress, marketplaceAddress }: Props) =>
       <div className="group bg-gray-800/30 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700/30 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1">
         <div className="relative overflow-hidden bg-gray-900 h-64 flex items-center justify-center">
           {imageSrc ? (
+            // eslint-disable-next-line @next/next/no-img-element -- IPFS gateway URL comes from env at runtime
             <img
               src={imageSrc}
               alt={displayName}

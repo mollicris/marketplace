@@ -95,6 +95,7 @@ export default function FeaturedNFTs() {
             >
               {/* Imagen del NFT */}
               <div className="relative overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element -- external sample images */}
                 <img
                   src={nft.image}
                   alt={nft.title}

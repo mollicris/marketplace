@@ -1,10 +1,8 @@
-import React from 'react'
-import RoleManager from '~~/components/RoleManager'
+import React from "react";
+import RoleManager from "~~/components/RoleManager";
 
 const page = () => {
-    return (
-        <RoleManager />
-    )
-}
+  return <RoleManager />;
+};
 
-export default page
+export default page;
